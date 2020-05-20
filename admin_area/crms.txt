@@ -1,0 +1,204 @@
+DATABASE: crms
+
+admins
+	admin_id
+	name
+	email
+	image
+	password
+	create_date
+	last_login
+
+
+areas
+	area_id
+	area_name
+	area_text
+
+
+customers
+	customer_id
+	customer_name
+	customer_email
+	customer_password
+	customer_phone_num
+	customer_state
+	customer_city
+	customer_address
+	customer_image
+	date_created
+	last_login
+	customer_creator[staff_code]
+	*******************
+	area_id
+
+
+branches
+	branch_id
+	branch_code
+	branch_state
+	branch_city
+
+
+workteams
+	workteam_id
+	workteam_title
+	workteam_head [staff_id]
+	workteam_message
+
+
+staffs
+	staff_id
+	staff_name
+	staff_code
+	staff_email
+	staff_phone_num
+	staff_password
+	staff_image
+	staff_status[DEACTIVATED | ACTIVATED]
+	role_id
+	staff_creator[staff_code]
+	***************
+	***branch_id
+	workteam_id
+
+
+requests
+	request_id
+	requset_code
+	request_address
+	request_subject
+	request_message
+	request_attachment
+	request_date
+	request_time
+	request_status [NEW | OPEN | PENDING | RESOLVED | DELETED]
+	*******************
+	request_cat_id
+	customer_id
+	workteam_id
+
+
+request_cats
+	request_cat_id
+	request_category
+
+
+comments
+	comment_id
+	comment_text
+	comment_date
+	comment_time
+	comment_status [Y | N]
+	*************
+	request_id
+	customer_id
+	staff_id
+
+
+resolved_requests
+	resolved_id
+	resolved_address
+	resolved_subject
+	resolved_message
+	resolved_attachment
+	resolved_date
+	resolved_time
+	********************
+	request_id
+	request_cat_id
+	customer_id
+	workteam_id
+	request_assignee
+
+notes
+	note_id
+	note_text
+	note_date
+	note_status [Y|N]
+	staff_code
+
+deleted_requests
+	del_id	
+	del_code		
+	del_address		
+	del_subject		
+	del_message		
+	del_attachment		
+	del_date		
+	del_time		
+	del_status		
+	del_cat_id		
+	customer_id		
+	del_assignee		
+	workteam_id	
+
+
+
+
+/*********NOTES********************/
+---Add request_assignee to requests+++
+---Customer Default Password: Phone Number+++
+---Use meter number to uniquely identify user+++
+---Add 'Welcome, Username' to button+++
+---Add last_login attribute (CCR+++, TECHNICIAN+++, CUSTOMER+++)
+---Update last login for every successful login (CCR+++, TECHNICIAN+++, CUSTOMER+++)
+---Create notes section for customer care representatives+++
+---Create pseudo-Delete priviledges for customer and CCR+++
+---Manager be able to enable and disable staff account+++
+---Download 09042020.zip file to complete 'Notes'+++
+---Encode URLs
+---Change comment status to Y[SEEN] after 5mins+++
+---File uploads restrictions. DOCS[.pdf,.doc,.xls,.txt,.csv] PHOTOS[.jpg,.jpeg,.png]
+function get_customers(){
+      var page_name = 'view_customers';
+
+      $.ajax({
+        url: 'custom_docs/page_load.php',
+        method: 'get',
+        data: {page_name:page_name},
+        success:function(data)
+        {
+          $('.content-wrapper').html(data);
+          history.pushState(null, null, '?'+page_name);
+        }
+      });
+    }
+
+    $('#customer_edit').click(function(e){
+      e.preventDefault();
+      var customer_id = $('#customer_id').val();
+      var name = $('#name').val();
+      var email = $('#email').val();
+      var phone_num = $('#phone_num').val();
+      var state = $('#state').val();
+      var city = $('#city').val();
+      var address = $('#address').val();
+      var area = $('#area').val();
+
+      $.ajax({
+        url: 'custom_docs/edit_customer.php',
+        type: 'POST',
+        data:
+        {
+          customer_id:customer_id,
+          name:name,
+          email:email,
+          phone_num:phone_num,
+          state:state,
+          city:city,
+          address:address,
+          area:area
+        },
+        success: function()
+        {
+          Swal.fire('Updated Successfully!','','success');
+          get_customers();
+        }
+      });
+    });
+
+rgb(155, 187, 88)
+
+epiz_25781421!
+$500_csms

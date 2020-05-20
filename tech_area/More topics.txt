@@ -1,0 +1,34 @@
+***Data and security applications
+***On-demand mobile application development
+***Digital wallet apps
+***Chatbots
+***Cloud computing
+***Issues of Privacy and Databases in the Ever Broadening IT World
+***
+
+
+
+
+***Culture and Information Technology: Effects of National Culture on the Implementation of Information Technology
+***Issues of Privacy and Databases in the Ever Broadening IT World
+***
+
+
+<script type="text/javascript">
+           $(document).ready(function(){
+              $('.my_details').on('click', function(e){
+                e.preventDefault();
+                var nav_link = $(this).attr("id");
+                $.ajax({
+                  type: 'GET',
+                  url: 'test_nav.php',
+                  data: {nav_link:nav_link},
+                  success:function(response)
+                  {
+                    var jsonData = JSON.parse(response);
+                    console.log('Working');
+                  }
+                });
+              });
+           });
+         </script>

@@ -1,0 +1,105 @@
+DATABASE: crms
+
+admins
+	admin_id
+	name
+	email
+	image
+	password
+	create_date
+	last_login
+
+
+areas
+	area_id
+	area_name
+	area_text
+
+
+customers
+	customer_id
+	customer_name
+	customer_email
+	customer_password
+	customer_phone_num
+	customer_state
+	customer_city
+	customer_address
+	customer_image
+	*******************
+	area_id
+
+
+branches
+	branch_id
+	branch_code
+	branch_state
+	branch_city
+
+
+workteams
+	workteam_id
+	workteam_title
+	workteam_head [staff_id]
+	workteam_message
+
+
+staffs
+	staff_id
+	staff_name
+	staff_code
+	staff_email
+	staff_phone_num
+	staff_password
+	staff_image
+	staff_assigner [YES | NO]
+	***************
+	***branch_id
+	workteam_id
+
+
+requests
+	request_id
+	request_address
+	request_subject
+	request_message
+	request_attachment
+	request_date
+	request_time
+	request_status [NEW | OPEN | PENDING]
+	*******************
+	request_cat_id
+	customer_id
+	workteam_id
+
+
+request_cats
+	request_cat_id
+	request_category
+
+
+comments
+	comment_id
+	comment_text
+	comment_date
+	comment_time
+	comment_status [Y | N]
+	*************
+	request_id
+	customer_id
+	staff_id
+
+
+resolved_requests
+	resolved_id
+	resolved_address
+	resolved_subject
+	resolved_message
+	resolved_attachment
+	resolved_date
+	resolved_time
+	********************
+	request_id
+	request_cat_id
+	customer_id
+	workteam_id
