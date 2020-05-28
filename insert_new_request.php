@@ -15,9 +15,16 @@
 
         $accepted_extensions = ['doc','docx','pdf','txt','csv','xlsx','xls','xl','jpg','jpeg','png'];
 
-        if(in_array($extension, $accepted_extensions))
+        if(($attachment == '') || (in_array($extension, $accepted_extensions)))
         {
-          move_uploaded_file($temp_name,"attachments/$attachment");
+        	if($attachment != '')
+        	{
+	          move_uploaded_file($temp_name,"attachments/$attachment");
+        	}
+        	else
+        	{
+        		$attachment = NULL;
+        	}
 
           $last_id_q = mysqli_query($con, "SHOW TABLE STATUS WHERE Name = 'requests'");
           $id = mysqli_fetch_assoc($last_id_q);
