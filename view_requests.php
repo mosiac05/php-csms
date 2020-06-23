@@ -46,7 +46,7 @@
                 <tr>
                   <th width="20%">ID</th>
                   <th width="60%">SUBJECT</th>
-                  <th width="20%">ACTIONS</th>
+                  <th width="20%">ACTION</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,7 +82,7 @@
                       if($request_status == 'RESOLVED' || $request_status == 'NEW')
                       {
                      ?>
-                    <button type="button" id="<?=$request_id; ?>" class="btn btn-sm bg-red pull-right delete_submit"><i class="fa fa-trash"></i></button>
+                    <button type="button" id="<?=$request_id; ?>" class="btn btn-sm bg-red pull-right delete_submit hidden-xs"><i class="fa fa-trash"></i></button>
                     <?php } ?> 
                   </td>
                 </tr>
@@ -92,7 +92,7 @@
                 <tr>
                   <th>ID</th>
                   <th>SUBJECT</th>
-                  <th>ACTIONS</th>
+                  <th>ACTION</th>
                 </tr>
                 </tfoot>
               </table>

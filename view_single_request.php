@@ -90,7 +90,7 @@
         echo "<tr><th>TIME</th><td>{$request_time}</td></tr>";
         echo "<tr><th>REQUEST</th><td>{$request_message}</td></tr>";
         if($request_attachment != ''){
-        echo "<tr><th>ATTACHMENT</th><td><a href='attachments/{$request_attachment}' class='btn btn-warning' target='_blank'>{$request_attachment}</a></td></tr>";
+        echo "<tr><th>ATTACHMENT</th><td><a href='attachments/{$request_attachment}' class='btn btn-sm btn-default' target='_blank'>Click to view ({$request_attachment})</a></td></tr>";
         } else{
         echo "<tr><th>ATTACHMENT</th><td><em>No attachments</em></td></tr>";
         }
@@ -107,7 +107,7 @@
           echo "<tr><th>WORKTEAM:</th><td>{$workteam['workteam_title']}</td></tr>";
         }
         if($request_status == 'RESOLVED'){
-          echo "<tr><th>DELETE</th><td><button type='button' id='{$request_id}' class='btn bg-red delete_submit'><i class='fa fa-trash'></i> Delete</button></td></tr>";
+          echo "<tr><th>DELETE</th><td><button type='button' id='{$request_id}' class='btn btn-sm bg-red delete_submit'><i class='fa fa-trash'></i></button></td></tr>";
         }
         ?>
                   
@@ -116,7 +116,7 @@
                     if(($workteam_id == NULL) && ($request_status == 'NEW')){
                    ?>
                   <div class="box-tools">
-                      <button type="button" class="btn btn-flat btn-primary" title="Edit" data-toggle="modal" data-target="#modal-edit">
+                      <button type="button" class="btn btn-sm btn-primary" title="Edit" data-toggle="modal" data-target="#modal-edit">
                         <i class="fa fa-edit"> <b>Edit</b></i>
                       </button>
                       <button type="button" id="<?=$request_id; ?>" class="btn btn-sm bg-red pull-right delete_submit"><i class="fa fa-trash"></i> Delete</button>

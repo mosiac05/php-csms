@@ -59,7 +59,7 @@
                       <th>Area</th>
                       <th>EPRT</th>
                       <th>Edit</th>
-                      <!-- <th>Delete</th> -->
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,8 +73,8 @@
                       <td><?=$i; ?></td>
                       <td><?=$area['area_name']; ?></td>
                       <td><?=$area['area_text']; ?></td>
-                      <td><input type="submit" name="edit_area" value="Edit" id="<?=$area['area_id']; ?>" class="btn btn-warning edit_area" /></td>
-                      <!-- <td><input type="submit" name="delete_area" value="Delete" id="<?=$area['area_id']; ?>" class="btn btn-danger delete_area" /></td> -->
+                      <td><a href="#" id="<?=$area['area_id']; ?>" class="btn btn-sm btn-warning edit_area" /><i class="fa fa-edit"></i></a></td>
+                      <td><a href="#" id="<?=$area['area_id']; ?>" class="btn btn-sm btn-danger delete_area" /><i class="fa fa-trash"></i></a></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -144,19 +144,6 @@
           });
         });
 
-        function get_page(page_name){
-          $.ajax({
-            url: 'custom_docs/page_load.php',
-            method: 'get',
-            data: {page_name:page_name},
-            success:function(data)
-            {
-              $('.content-wrapper').html(data);
-              history.pushState(null, null, '?'+page_name);
-            }
-          });
-        }
-
         $('#area_edit_form').submit(function(e){
           e.preventDefault();
 
@@ -186,6 +173,32 @@
             {
               Swal.fire('Added Successfully!','','success');
               window.open('index.php?areas', '_SELF');    
+            }
+          });
+        });
+
+        $('.delete_area').click(function(e){
+          e.preventDefault();
+          var area_delete_id = $(this).attr('id');
+          
+          $.ajax({
+            url: 'custom_docs/areas.php',
+            type: 'POST',
+            data: {
+              area_delete_id: area_delete_id
+            },
+            success: function(data)
+            {
+              var jsonData = JSON.parse(data);
+
+              if(jsonData == '1')
+              {
+                Swal.fire('Deleted Successfully', '', 'success');
+              }
+              else
+              {
+                alert('Unsuccessful, ensure no customer has been assigned the area');
+              }
             }
           });
         });

@@ -29,19 +29,34 @@ elseif(isset($_POST['workteam_title']) && isset($_POST['workteam_head']))
 	if($workteam_insert)
 	{
 		$last_id_q = mysqli_query($con, "SHOW TABLE STATUS WHERE Name = 'workteams'");
-        $id = mysqli_fetch_assoc($last_id_q);
-        $next_req_id = $id['Auto_increment'];
+    $id = mysqli_fetch_assoc($last_id_q);
+    $next_req_id = $id['Auto_increment'];
 
-        $staff_query = mysqli_query($con, "SELECT staff_code FROM staffs WHERE staff_id = '$head'");
-        $staff_row = mysqli_fetch_assoc($staff_query);
-        $staff_code = $staff_row['staff_code'];
+    $staff_query = mysqli_query($con, "SELECT staff_code FROM staffs WHERE staff_id = '$head'");
+    $staff_row = mysqli_fetch_assoc($staff_query);
+    $staff_code = $staff_row['staff_code'];
 
-        mysqli_query($con, "INSERT INTO workteam_members(workteam_id,workteam_member,date_created) VALUES ('$next_req_id','$staff_code',NOW())");
+    mysqli_query($con, "INSERT INTO workteam_members(workteam_id,workteam_member,date_created) VALUES ('$next_req_id','$staff_code',NOW())");
 	}
 }
 elseif(isset($_POST['delete_member']))
 {
 	$delete_member = $_POST['delete_member'];
-    $member_delete = mysqli_query($con, "DELETE FROM workteam_members WHERE workteam_member = $delete_member");
+  $member_delete = mysqli_query($con, "DELETE FROM workteam_members WHERE workteam_member = $delete_member");
 }
- ?>
+else if(isset($_POST['workteam_delete_id'])){
+	$workteam_id = $_POST['workteam_delete_id'];
+
+	$delete_query = mysqli_query($con, "DELETE FROM workteams WHERE workteam_id =  '$workteam_id'");
+
+	if($delete_query)
+	{
+		echo 1;
+	}
+	else
+	{
+		echo 0;
+	}
+}
+
+?>

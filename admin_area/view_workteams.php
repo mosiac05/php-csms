@@ -79,11 +79,11 @@
                   <thead>
                     <tr>
                       <th>S/N</th>
-                      <th>Workteam Title</th>
+                      <th>Title</th>
                       <th>Head</th>
-                      <th>View Members</th>
+                      <th>Members</th>
                       <th class="<?=$table_class; ?>">Edit</th>
-                      <!-- <th>Delete</th> -->
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -100,7 +100,8 @@
                       <td><?=$workteam['workteam_title']; ?></td>
                       <td><?=$staff['staff_name']; ?></td>
                       <td><a href="index.php?workteam_id=<?=$workteam['workteam_id']; ?>" class="btn btn-sm bg-purple workteam_btn" id="<?=$workteam['workteam_id']; ?>">View</a></td>
-                      <td class="<?=$table_class; ?>"><input type="submit" name="edit_workteam" value="Edit" id="<?=$workteam['workteam_id']; ?>" class="btn btn-sm btn-warning edit_btn" /></td>
+                      <td class="<?=$table_class; ?>"><a href="#" id="<?=$workteam['workteam_id']; ?>" class="btn btn-sm btn-warning edit_btn" /><i class="fa fa-edit"></i></a></td>
+                      <td class="<?=$table_class; ?>"><a href="#" id="<?=$workteam['workteam_id']; ?>" class="btn btn-sm btn-danger delete_workteam" /><i class="fa fa-trash"></i></a></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -163,35 +164,6 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    // function get_page(page_name){
-    //   $.ajax({
-    //     url: 'custom_docs/page_load.php',
-    //     method: 'get',
-    //     data: {page_name:page_name},
-    //     success:function(data)
-    //     {
-    //       $('.content-wrapper').html(data);
-    //       history.pushState(null, null, '?'+page_name);
-    //     }
-    //   });
-    // }
-
-    // $('.workteam_btn').click(function(e){
-    //   e.preventDefault();
-
-    //   var id = $(this).attr("id");
-    //   $.ajax({
-    //     type: "GET",
-    //     url: 'custom_docs/page_load.php',
-    //     data: "workteam_id=" + id, // appears as $_GET['id'] @ your backend side
-    //     success: function(data)
-    //     {
-    //       $('.content-wrapper').html(data);
-    //       history.pushState(null, null, '?workteam_id='+id);
-    //     }
-    //   });
-    // });
-
     $('#workteam_form').submit(function(e){
       e.preventDefault();
 
@@ -244,6 +216,33 @@
           $('#workteam_edit_form')[0].reset();
           $('.modal-backdrop').remove();
           window.open('index.php?view_workteams', '_self');
+        }
+      });
+    });
+
+    $('.delete_workteam').click(function(e){
+      e.preventDefault();
+      var workteam_delete_id = $(this).attr('id');
+      
+      $.ajax({
+        url: 'custom_docs/workteams.php',
+        type: 'POST',
+        data: {
+          workteam_delete_id: workteam_delete_id
+        },
+        success: function(data)
+        {
+          var jsonData = JSON.parse(data);
+
+          if(jsonData == 1)
+          {
+            Swal.fire('Deleted Successfully', '', 'success');
+            window.open('index.php?view_workteams', '_self');
+          }
+          else
+          {
+            alert('Unsuccessful, some staff have been assigned this workteam.');
+          }
         }
       });
     });

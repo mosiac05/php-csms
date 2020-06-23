@@ -41,13 +41,13 @@
                 </form>
               </div>
               <div class="col-md-6">
-                <table class="table table-bordered table-striped" id="area_table">
+                <table class="table table-bordered table-striped" id="request_cat_table">
                   <thead>
                     <tr>
                       <th>S/N</th>
                       <th>Category</th>
                       <th>Edit</th>
-                      <!-- <th>Delete</th> -->
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -60,8 +60,8 @@
                     <tr>
                       <td><?=$i; ?></td>
                       <td><?=$cat['request_category']; ?></td>
-                      <td><input type="submit" name="edit_cat" value="Edit" id="<?=$cat['request_cat_id']; ?>" class="btn btn-warning edit_cat" /></td>
-                      <!-- <td><input type="submit" name="delete_area" value="Delete" id="<?=$area['area_id']; ?>" class="btn btn-danger delete_area" /></td> -->
+                      <td><a href="#" id="<?=$cat['request_cat_id']; ?>" class="btn btn-sm btn-warning edit_cat" /><i class="fa fa-edit"></i></a></td>
+                      <td><a href="#" id="<?=$cat['request_cat_id']; ?>" class="btn btn-sm btn-danger delete_cat" /><i class="fa fa-trash"></i></a></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -106,29 +106,6 @@
   <!-- /.modal -->
 
 
-
-<div id="delete_cat" class="modal modal-default fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-primary">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Delete Request Category?</h4>
-        </div>
-        <div class="modal-body" id="role_delete">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
-
-
   <script>
     $(document).ready(function(){
 
@@ -148,19 +125,6 @@
             }
           });
         });
-
-        function get_page(page_name){
-          $.ajax({
-            url: 'custom_docs/page_load.php',
-            method: 'get',
-            data: {page_name:page_name},
-            success:function(data)
-            {
-              $('.content-wrapper').html(data);
-              history.pushState(null, null, '?'+page_name);
-            }
-          });
-        }
 
         $('#cat_edit_form').submit(function(e){
           e.preventDefault();
@@ -193,6 +157,33 @@
               $('#cat_form')[0].reset();
               $('.modal-backdrop').remove();
               window.open('index.php?view_request_cats', '_self')
+            }
+          });
+        });
+
+        $('.delete_cat').click(function(e){
+          e.preventDefault();
+          var request_cat_delete_id = $(this).attr('id');
+
+          $.ajax({
+            url: 'custom_docs/request_cats.php',
+            type: 'POST',
+            data: {
+              request_cat_delete_id: request_cat_delete_id
+            },
+            success: function(data)
+            {
+              var jsonData = JSON.parse(data);
+
+              if(jsonData == '1')
+              {
+                Swal.fire('Deleted Successfully', '', 'success');
+                window.open('index.php?view_request_cats', '_self');
+              }
+              else
+              {
+                alert('Unsuccessful, some requests are linked to the category.\n\nEnsure there are none!');
+              }
             }
           });
         });

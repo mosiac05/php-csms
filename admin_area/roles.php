@@ -54,7 +54,7 @@ if($role_id != 1)
                       <th>S/N</th>
                       <th>Role</th>
                       <th>Edit</th>
-                      <!-- <th>Delete</th> -->
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -68,8 +68,8 @@ if($role_id != 1)
                     <tr>
                       <td><?=$i; ?></td>
                       <td><?=$role['role_name']; ?></td>
-                      <td><a href="#" id="<?=$role_edit_id; ?>" class="btn btn-warning edit_role">Edit</a></td>
-                      <!-- <td><input type="submit" name="delete_role" value="Delete" id="<?=$role['role_id']; ?>" class="btn btn-danger delete_role" /></td> -->
+                      <td><a href="#" id="<?=$role_edit_id; ?>" class="btn btn-sm btn-warning edit_role"><i class="fa fa-edit"></i></a></td>
+                      <td><a href="#" id="<?=$role['role_id']; ?>" class="btn btn-sm btn-danger delete_role" /><i class="fa fa-trash"></i></a></td>
                     </tr>
                   <?php } ?>
                   </tbody>
@@ -134,19 +134,6 @@ if($role_id != 1)
           });
         });
 
-        function get_page(page_name){
-          $.ajax({
-            url: 'custom_docs/page_load.php',
-            method: 'get',
-            data: {page_name:page_name},
-            success:function(data)
-            {
-              $('.content-wrapper').html(data);
-              history.pushState(null, null, '?'+page_name);
-            }
-          });
-        }
-
         $('#role_edit_form').submit(function(e){
           e.preventDefault();
 
@@ -159,8 +146,7 @@ if($role_id != 1)
               alert('Edited Successfully!');
               $('#edit_Modal').modal('hide');
               $('.modal-backdrop').remove();
-              get_page('roles');
-
+              window.open('index.php?roles', '_self');
             }
           });
         });
@@ -176,7 +162,36 @@ if($role_id != 1)
             success: function()
             {
               Swal.fire('Added Successfully!','','success');
-              get_page('roles');              
+              window.open('index.php?roles', '_self');
+            }
+          });
+        });
+
+        $('.delete_role').click(function(e){
+          e.preventDefault();
+          var role_id = $(this).attr('id');
+          var role_delete = '';
+
+          $.ajax({
+            url: 'custom_docs/roles.php',
+            type: 'POST',
+            data: {
+              role_id: role_id,
+              role_delete: role_delete
+            },
+            success: function(data)
+            {
+              var jsonData = JSON.parse(data);
+
+              if(jsonData == '1')
+              {
+                Swal.fire('Deleted Successfully', '', 'success');
+                window.open('index.php?roles', '_self');
+              }
+              else
+              {
+                alert('Unsuccessful, ensure no staff is assigned that role');
+              }
             }
           });
         });
